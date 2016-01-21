@@ -2,18 +2,19 @@
 """Helioviewer.org JPEG 2000 processing functions"""
 import os
 import logging
-import sunpy
+import MySQLdb
 from helioviewer.db import get_datasources, enable_datasource
 
 __INSERTS_PER_QUERY__ = 500
 __STEP_FXN_THROTTLE__ = 50
 
-def find_images(path):
-    '''Searches a directory for JPEG 2000 images.
 
+def find_images(path):
+    """
+    Searches a directory for JPEG 2000 images.
     Traverses file-tree starting with the specified path and builds a list of
     the available images.
-    '''
+    """
     images = []
 
     for root, dirs, files in os.walk(path):
@@ -23,8 +24,11 @@ def find_images(path):
 
     return images
 
-def process_jp2_images (images, root_dir, cursor, mysql=True, step_fxn=None, cursor_v2=None):
-    '''Processes a collection of JPEG 2000 Images'''
+
+def process_jp2_images(images, root_dir, cursor, mysql=True, step_fxn=None, cursor_v2=None):
+    """
+    Processes a collection of JPEG 2000 Images.
+    """
     if mysql:
         import MySQLdb
     else:
@@ -39,8 +43,10 @@ def process_jp2_images (images, root_dir, cursor, mysql=True, step_fxn=None, cur
         images = images[__INSERTS_PER_QUERY__:]
         insert_images(subset, sources, root_dir, cursor, mysql, step_fxn, cursor_v2)
 
+
 def insert_images(images, sources, rootdir, cursor, mysql, step_function=None, cursor_v2=None):
-    """Inserts multiple images into a database using a single query
+    """
+    Inserts multiple images into a database using a single query.
 
     Parameters
     ----------
@@ -100,17 +106,25 @@ def insert_images(images, sources, rootdir, cursor, mysql, step_function=None, c
     query = query[:-1] + ";"
     query_v2 = query_v2[:-1] + ";"
 
-    # Execute query
-    cursor.execute(query)
-    
-    if cursor_v2:
-    	cursor_v2.execute(query_v2)
-    	
+    # Execute query on the version 1 database
+    try:
+        cursor.execute(query)
+    except MySQLdb.OperationalError as err:
+        logging.warn("Error: '{}' reported when executing this query: '{}' on version 1 of the database".format(err, query))
+
+    # Execute query on the version 2 database
+    try:
+        if cursor_v2:
+            cursor_v2.execute(query_v2)
+    except MySQLdb.OperationalError as err:
+        logging.warn("Error: '{}' reported when executing this query: '{}' on version 2 of the database".format(err, query))
+
 
 class BadImage(ValueError):
     """Exception to raise when a "bad" image (e.g. corrupt or calibration) is
     encountered."""
     def __init__(self, message=""):
         self.message = message
+
     def get_message(self):
         return self.message

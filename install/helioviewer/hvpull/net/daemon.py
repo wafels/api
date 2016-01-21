@@ -12,7 +12,6 @@ import shutil
 import sunpy
 import Queue
 import MySQLdb
-from random import shuffle
 from helioviewer.jp2 import process_jp2_images, BadImage
 from helioviewer.db  import get_db_cursor, mark_as_corrupt
 from helioviewer.hvpull.browser.basebrowser import NetworkError
