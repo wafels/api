@@ -17,6 +17,7 @@ from helioviewer.db  import get_db_cursor, mark_as_corrupt
 from helioviewer.hvpull.browser.basebrowser import NetworkError
 from sunpy.time import is_time
 
+
 class ImageRetrievalDaemon:
     """Retrieves images from the server as specified"""
     def __init__(self, servers, browse_method, download_method, conf):

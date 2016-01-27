@@ -3,6 +3,7 @@ import os
 import logging
 import logging.handlers
 
+
 def init_logger(filepath):
     """Initializes logging"""
     # Check for logging directory

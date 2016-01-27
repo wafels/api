@@ -29,6 +29,7 @@ import ConfigParser
 from helioviewer import init_logger
 from helioviewer.hvpull.net.daemon import ImageRetrievalDaemon
 
+
 def main():
     """Main application"""
 
@@ -67,6 +68,7 @@ def main():
     logging.info("Finished processing all files in requested time range")
     logging.info("Exiting HVPull")
 
+
 def get_config(filepath):
     """Load configuration file"""
     config = ConfigParser.ConfigParser()
@@ -83,6 +85,7 @@ def get_config(filepath):
                                         'settings/settings.example.cfg')))
         
     return config
+
 
 def get_args():
     parser = argparse.ArgumentParser(description='Retrieves JPEG 2000 images.', add_help=False)
@@ -119,6 +122,7 @@ def get_args():
     args.servers = args.servers.split(",")
     
     return args
+
 
 def validate_args(args, servers, browsers, downloaders):
     """Validate arguments"""
