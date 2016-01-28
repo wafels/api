@@ -15,9 +15,8 @@ def init_logger(filepath):
             
         os.chdir(directory)
         
-    # %(asctime)s.%(msecs)03d
-    formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s',
-                                  datefmt='%Y-%m-%d %H:%M:%S')
+    # %(asctime)s.%(msecs)03d datefmt='%Y-%m-%d %H:%M:%S'
+    formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
     
     logger = logging.getLogger('')
     logger.setLevel(logging.INFO)
