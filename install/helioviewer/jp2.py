@@ -110,14 +110,14 @@ def insert_images(images, sources, rootdir, cursor, mysql, step_function=None, c
     try:
         cursor.execute(query)
     except MySQLdb.OperationalError as err:
-        logging.warn("Error: '{}' reported when executing this query: '{}' on version 1 of the database".format(err, query))
+        logging.error("Error: '{}' reported on version 1 of the database when executing this query: '{}'".format(err, query))
 
     # Execute query on the version 2 database
     try:
         if cursor_v2:
             cursor_v2.execute(query_v2)
     except MySQLdb.OperationalError as err:
-        logging.warn("Error: '{}' reported when executing this query: '{}' on version 2 of the database".format(err, query))
+        logging.error("Error: '{}' reported on version 2 of the database when executing this query: '{}'".format(err, query_v2))
 
 
 class BadImage(ValueError):
