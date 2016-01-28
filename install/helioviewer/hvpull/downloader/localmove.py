@@ -20,7 +20,7 @@ class LocalFileMove(threading.Thread):
     def run(self):
         """Downloads the file at the specified URI"""
         while not self.shutdown_requested:
-            #ValueError: too many values to unpack
+            # ValueError: too many values to unpack
             server, percent, uri = self.queue.get()
             
             # @TODO: compute path to download file to...
@@ -34,7 +34,7 @@ class LocalFileMove(threading.Thread):
                     os.makedirs(os.path.dirname(filepath))
                 except OSError:
                     pass
-            #Attempt to move the file
+            # Attempt to move the file
             try:
                 t1 = time.time()
                 shutil.move(uri, filepath)
@@ -47,4 +47,3 @@ class LocalFileMove(threading.Thread):
             except:
                 logging.warning("Failed to move %s.", uri)
             self.queue.task_done()
-    
