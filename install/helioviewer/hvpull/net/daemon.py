@@ -551,9 +551,17 @@ class ImageRetrievalDaemon:
         """Filters out images that are known to have problems using information
         in their metadata"""
 
+        # Make sure there are some parameters to work with.
+        if params is None:
+            raise BadImage("Image parameters 'params' is set to None.")
+
         # Make sure the time can be understood
-        if not is_time(params['date']):
-            raise BadImage("DATE")
+        if params['date'] is None:
+            logging.warn('DATE parameter is set to None.')
+            raise BadImage("DATE parameter is set to None.")
+        elif not is_time(params['date']):
+            logging.warn('DATE is not recognized as a time.')
+            raise BadImage("DATE is not recognized as a time.")
 
         # AIA
         if params['detector'] == "AIA":
