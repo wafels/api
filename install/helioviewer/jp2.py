@@ -8,12 +8,13 @@ from helioviewer.db import get_datasources, enable_datasource
 __INSERTS_PER_QUERY__ = 500
 __STEP_FXN_THROTTLE__ = 50
 
+
 def find_images(path):
-    '''Searches a directory for JPEG 2000 images.
+    """Searches a directory for JPEG 2000 images.
 
     Traverses file-tree starting with the specified path and builds a list of
     the available images.
-    '''
+    """
     images = []
 
     for root, dirs, files in os.walk(path):
@@ -23,8 +24,9 @@ def find_images(path):
 
     return images
 
-def process_jp2_images (images, root_dir, cursor, mysql=True, step_fxn=None, cursor_v2=None):
-    '''Processes a collection of JPEG 2000 Images'''
+
+def process_jp2_images(images, root_dir, cursor, mysql=True, step_fxn=None, cursor_v2=None):
+    """Processes a collection of JPEG 2000 Images"""
     if mysql:
         import MySQLdb
     else:
@@ -38,6 +40,7 @@ def process_jp2_images (images, root_dir, cursor, mysql=True, step_fxn=None, cur
         subset = images[:__INSERTS_PER_QUERY__]
         images = images[__INSERTS_PER_QUERY__:]
         insert_images(subset, sources, root_dir, cursor, mysql, step_fxn, cursor_v2)
+
 
 def insert_images(images, sources, rootdir, cursor, mysql, step_function=None, cursor_v2=None):
     """Inserts multiple images into a database using a single query
@@ -104,13 +107,14 @@ def insert_images(images, sources, rootdir, cursor, mysql, step_function=None, c
     cursor.execute(query)
     
     if cursor_v2:
-    	cursor_v2.execute(query_v2)
-    	
+        cursor_v2.execute(query_v2)
+
 
 class BadImage(ValueError):
     """Exception to raise when a "bad" image (e.g. corrupt or calibration) is
     encountered."""
     def __init__(self, message=""):
         self.message = message
+
     def get_message(self):
         return self.message

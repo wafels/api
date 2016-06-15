@@ -443,7 +443,7 @@ class ImageRetrievalDaemon:
 
         # Base command
 
-        command ='kdu_transcode -i %s -o %s' % (filepath, tmp)
+        command = 'kdu_transcode -i %s -o %s' % (filepath, tmp)
 
         # Corder
         if corder is not None:
@@ -517,7 +517,7 @@ class ImageRetrievalDaemon:
                 while value is None:
                     counters[idx] += 1
 
-                    if(len(files[idx]) > counters[idx]):
+                    if len(files[idx]) > counters[idx]:
                         value = files[idx][counters[idx]]
                     else:
                         break
