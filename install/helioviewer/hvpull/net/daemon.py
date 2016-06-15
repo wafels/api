@@ -338,7 +338,21 @@ class ImageRetrievalDaemon:
             # Parse header and validate metadata
             try:
                 try:
-                    image_params = sunpy.read_header(filepath)
+                    # Read in the JPEG2000 file as a SunPy Map
+                    smap = Map(filepath)
+
+                    # SunPy v0.2 allowed the reading of a header only into an
+                    # image parameter dictionary.  This functionality is
+                    # reproduced here, and acts as a separation between
+                    # the requirements of the Helioviewer Project and changes
+                    # to the SunPy map
+                    image_params = {}
+                    image_params['observatory'] = smap.observatory
+                    image_params['instrument'] = smap.instrument
+                    image_params['detector'] = smap.detector
+                    image_params['measurement'] = smap.measurement
+                    image_params['date'] = smap.date
+                    image_params['nickname'] = smap.nickname
                 except:
                     raise BadImage("HEADER")
                     logging.warn('BadImage("HEADER") error raised')
